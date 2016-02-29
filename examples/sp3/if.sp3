@@ -1,0 +1,8 @@
+var ENABLE_DEBUGGING_CODE = 1
+
+if (ENABLE_DEBUGGING_CODE)
+  v_mov_b32 v1, 0x3333
+  v_mov_b32 v2, 0x5555
+  v_mov_b32 v3, 0
+  flat_store_dword v[2:3], v1
+end

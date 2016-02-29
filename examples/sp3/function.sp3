@@ -1,0 +1,6 @@
+function WriteTo(Reg, Value)
+  v_and_b32 Reg, Reg, 0xF;
+  v_mov_b32 Reg, Value
+end
+
+WriteTo(v1, 0xFFFF)

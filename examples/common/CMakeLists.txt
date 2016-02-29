@@ -1,0 +1,5 @@
+file(GLOB sources ${CMAKE_CURRENT_SOURCE_DIR}/*.cpp)
+include_directories(${HSA_HEADER_DIR})
+add_library(examples_common ${sources})
+target_include_directories(examples_common PUBLIC ${CMAKE_CURRENT_SOURCE_DIR})
+target_link_libraries(examples_common ${HSA_LIBRARY})
