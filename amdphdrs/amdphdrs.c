@@ -36,6 +36,7 @@ int main(int argc, char **argv) {
   const char *in_file, *out_file;
   int infd, outfd;
   int has_data = 0;
+  size_t virtual_addr = 0x10000;
 
   if (argc != 3) {
     print_usage();
@@ -135,9 +136,15 @@ int main(int argc, char **argv) {
       }
       */
 
+      section_header.sh_addr = virtual_addr;
+      virtual_addr += section_header.sh_size;
+
+      gelf_update_shdr(section, &section_header);
+
       code_phdr.p_type = 0x60000003;
       code_phdr.p_filesz = section_header.sh_size;
       code_phdr.p_vaddr = section_header.sh_addr;
+      code_phdr.p_paddr = code_phdr.p_vaddr;
       code_phdr.p_offset = section_header.sh_offset;
       code_phdr.p_memsz = code_phdr.p_filesz;
       code_phdr.p_align = 0x100;
@@ -156,10 +163,16 @@ int main(int argc, char **argv) {
         return EXIT_FAILURE;
       }
       */
+      section_header.sh_addr = virtual_addr;
+      virtual_addr += section_header.sh_size;
+
+      gelf_update_shdr(section, &section_header);
+
       global_program_phdr.p_type = 0x60000000;
       global_program_phdr.p_filesz = section_header.sh_size;
       global_program_phdr.p_filesz = section_header.sh_size;
       global_program_phdr.p_vaddr = section_header.sh_addr;
+      global_program_phdr.p_paddr = global_program_phdr.p_vaddr;
       global_program_phdr.p_offset = section_header.sh_offset;
       global_program_phdr.p_memsz = global_program_phdr.p_filesz;
       global_program_phdr.p_align = 4;
