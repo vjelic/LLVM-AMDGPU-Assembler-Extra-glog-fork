@@ -45,6 +45,9 @@ macro(asm_dispatch_example f)
   add_executable(${f} ${f}.cpp)
   target_link_libraries(${f} examples_common)
   install(FILES ${CMAKE_CURRENT_BINARY_DIR}/${f} DESTINATION bin COMPONENT examples)
+  add_test(NAME ${f}
+           COMMAND ./${f}
+           WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR})
 endmacro(asm_dispatch_example)
 
 add_subdirectory(common)

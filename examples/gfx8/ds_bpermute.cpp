@@ -45,7 +45,6 @@ public:
         ok = false;
       }
     }
-    output << (ok ? "Success" : "Failure") << std::endl;
     return ok;
   }
 };

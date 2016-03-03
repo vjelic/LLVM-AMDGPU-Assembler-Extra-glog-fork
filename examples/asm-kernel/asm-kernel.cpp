@@ -28,13 +28,11 @@ public:
       output << "Error: failed to copy from local" << std::endl;
       return false;
     }
-    if (((const float*)out->SystemPtr())[0] == 3.14159f) {
-      output << "Success" << std::endl;
-      return true;
-    } else {
+    if (((const float*)out->SystemPtr())[0] != 3.14159f) {
       output << "Error: validation failed: got " << (((const float*) out->SystemPtr())[0]) << " expected " << 3.14159 << std::endl;
       return false;
     }
+    return true;
   }
 };
 

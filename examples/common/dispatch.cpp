@@ -365,7 +365,11 @@ bool Dispatch::Run()
     RunDispatch() &&
     Wait() &&
     Verify();
-  std::cout << output.str() << std::endl;
+  std::string out = output.str();
+  if (!out.empty()) {
+    std::cout << out << std::endl;
+  }
+  std::cout << (res ? "Success" : "Failed") << std::endl;
   return res;
 }
 
