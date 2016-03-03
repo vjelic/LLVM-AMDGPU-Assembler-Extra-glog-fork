@@ -21,6 +21,12 @@ public:
     : size(size_), local_ptr(system_ptr_), system_ptr(system_ptr_) { }
   void *LocalPtr() const { return local_ptr; }
   void *SystemPtr() { return system_ptr; }
+  template <typename T>
+  T* Ptr() { return (T*) system_ptr; }
+  template <typename T>
+  const T& Data(size_t i) const { return ((const T*) system_ptr)[i]; }
+  template <typename T>
+  T& Data(size_t i) { return ((T*) system_ptr)[i]; }
   bool IsLocal() const { return local_ptr != system_ptr; }
   size_t Size() const { return size; }
 };

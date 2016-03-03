@@ -1,0 +1,1 @@
+asm_dispatch_example(ds_bpermute)
