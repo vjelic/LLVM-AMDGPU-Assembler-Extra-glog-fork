@@ -56,6 +56,7 @@ public:
   Dispatch(int argc, const char** argv);
 
   void SetAgent(hsa_agent_t agent) { assert(!this->agent.handle); this->agent = agent; }
+  bool HasAgent() const { return agent.handle != 0; }
   void SetCpuAgent(hsa_agent_t agent) { assert(!this->cpu_agent.handle); this->cpu_agent = agent; }
   void SetWorkgroupSize(uint16_t sizeX, uint16_t sizeY = 1, uint16_t sizeZ = 1);
   void SetGridSize(uint32_t sizeX, uint32_t sizeY = 1, uint32_t sizeZ = 1);

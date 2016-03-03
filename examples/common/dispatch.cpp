@@ -28,7 +28,9 @@ hsa_status_t find_gpu_device(hsa_agent_t agent, void *data)
 
   if (hsa_device_type == HSA_DEVICE_TYPE_GPU) {
     Dispatch* dispatch = static_cast<Dispatch*>(data);
-    dispatch->SetAgent(agent);
+    if (!dispatch->HasAgent()) {
+      dispatch->SetAgent(agent);
+    }
   }
 
   if (hsa_device_type == HSA_DEVICE_TYPE_CPU) {
