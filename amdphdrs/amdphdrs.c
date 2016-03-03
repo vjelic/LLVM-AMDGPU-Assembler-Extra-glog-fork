@@ -156,7 +156,7 @@ int main(int argc, char **argv) {
         return EXIT_FAILURE;
       }
       */
-      global_program_phdr.p_type = 0x60000001;
+      global_program_phdr.p_type = 0x60000000;
       global_program_phdr.p_filesz = section_header.sh_size;
       global_program_phdr.p_filesz = section_header.sh_size;
       global_program_phdr.p_vaddr = section_header.sh_addr;
