@@ -65,6 +65,7 @@ public:
   void SetLocalRegion(hsa_region_t region);
   bool AllocateKernarg(uint32_t size);
   bool Run();
+  int RunMain();
   virtual bool SetupExecutable();
   virtual bool SetupCodeObject();
   bool LoadCodeObjectFromFile(const std::string& filename);

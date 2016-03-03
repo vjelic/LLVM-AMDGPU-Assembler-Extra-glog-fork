@@ -4,6 +4,8 @@ project(LLVM-AMDGPU-Assembler-Extra)
 
 list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/cmake_modules")
 
+find_package(Perl REQUIRED)
+
 find_package(LLVM REQUIRED PATHS ${LLVM_DIR} NO_DEFAULT_PATH)
 
 list(APPEND CMAKE_MODULE_PATH ${LLVM_CMAKE_DIR})
@@ -35,6 +37,4 @@ if (UNIX)
 endif(UNIX)
 
 add_subdirectory(amdphdrs)
-add_subdirectory(examples/common)
-add_subdirectory(examples/sp3)
-add_subdirectory(examples/asm-kernel)
+add_subdirectory(examples)

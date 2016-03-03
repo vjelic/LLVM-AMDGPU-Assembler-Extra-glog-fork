@@ -369,5 +369,10 @@ bool Dispatch::Run()
   return res;
 }
 
+int Dispatch::RunMain()
+{
+  return Run() ? 0 : 1;
+}
+
 }
 }

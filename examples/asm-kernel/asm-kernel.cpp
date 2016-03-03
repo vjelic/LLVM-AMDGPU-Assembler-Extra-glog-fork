@@ -40,5 +40,5 @@ public:
 
 int main(int argc, const char** argv)
 {
-  return AsmKernelDispatch(argc, argv).Run() ? 0 : 1;
+  return AsmKernelDispatch(argc, argv).RunMain();
 }
