@@ -1,3 +1,9 @@
+//
+// Use ds_bpermute_b32 instruction to transfer data between
+// lanes in a wavefront. Input data, lane index and output
+// arrays are passed as kernel arguments.
+//
+
 .hsa_code_object_version 1,0
 .hsa_code_object_isa 8, 0, 3, "AMD", "AMDGPU"
 
