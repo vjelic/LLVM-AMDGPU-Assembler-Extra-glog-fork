@@ -1,6 +1,7 @@
 LLVM AMDGPU Assembler Extras
 ============================
 
+#### Overview
 This repository contains the following useful items related to AMDGPU ISA assembler:
 
   * *amdphdrs*: utility to convert ELF produced by llvm-mc into AMD Code Object (v1)
@@ -12,13 +13,28 @@ This repository contains the following useful items related to AMDGPU ISA assemb
 
 At the time of this writing (February 2016), LLVM trunk build and latest ROCR runtime is needed.
 
+
+#### Building
+
 Top-level CMakeLists.txt is provided to build everything included. The following CMake variables
 should be set:
   * HSA_DIR (default /opt/hsa/bin): path to ROCR Runtime
   * LLVM_DIR: path to LLVM build directory
 
 To build everything, create build directory and run cmake and make:
+
     mkdir build
     cd build  
     cmake -DLLVM_DIR=/srv/git/llvm.git/build ..
     make
+
+
+#### Using amdphdrs
+
+Given ELF object produced by llvm-mc, amdphdrs produces AMDGPU Code Object version 1.
+For example, given assembly source in asm.s, the following will assemble it and link using amdphdrs:
+
+    llvm-mc -arch=amdgcn -mcpu=fiji -filetype=obj -o asm.o asm.s
+    andphdrs asm.o asm.co
+
+
