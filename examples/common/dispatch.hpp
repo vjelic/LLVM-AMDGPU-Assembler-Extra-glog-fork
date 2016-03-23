@@ -134,6 +134,7 @@ public:
   }
 
   void Kernarg(Buffer* buffer);
+  uint64_t GetTimestampFrequency();
 };
 
 }
