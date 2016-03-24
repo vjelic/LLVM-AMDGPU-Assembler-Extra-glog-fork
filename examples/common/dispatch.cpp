@@ -420,5 +420,19 @@ int Dispatch::RunMain()
   return Run() ? 0 : 1;
 }
 
+uint64_t Dispatch::GetTimestampFrequency()
+{
+  uint64_t frequency;
+  hsa_status_t status;
+  status = hsa_system_get_info(HSA_SYSTEM_INFO_TIMESTAMP_FREQUENCY, &frequency);
+  if (status != HSA_STATUS_SUCCESS) {
+    HsaError("hsa_system_get_info(HSA_SYSTEM_INFO_TIMESTAMP_FREQUENCY) failed", status);
+    return 0;
+  }
+
+  return frequency;  
+}
+
 }
 }
+
