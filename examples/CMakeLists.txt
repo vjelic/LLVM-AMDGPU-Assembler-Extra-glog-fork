@@ -41,7 +41,9 @@
 ################################################################################
 
 set(LLVM-MC ${LLVM_TOOLS_BINARY_DIR}/llvm-mc)
+set(CLANG ${LLVM_TOOLS_BINARY_DIR}/clang)
 set(AMDPHDRS $<TARGET_FILE:amdphdrs>)
+set(AMDPHDRS_DIR $<TARGET_FILE_DIR:amdphdrs>)
 set(SP3_TO_MC "${CMAKE_SOURCE_DIR}/bin/sp3_to_mc.pl")
 
 macro(asm_assemble f)
@@ -71,6 +73,18 @@ macro(asm_example f)
   install(FILES ${CMAKE_CURRENT_BINARY_DIR}/${f}.co DESTINATION bin COMPONENT examples)
 endmacro(asm_example)
 
+macro(inline_asm_example f)
+  add_custom_command(
+    OUTPUT ${f}.co
+    COMMAND
+      ${CLANG} -x cl -Dcl_clang_storage_class_specifiers -target amdgcn--amdhsa -mcpu=fiji -B ${AMDPHDRS_DIR} -o ${f}.co ${CMAKE_CURRENT_SOURCE_DIR}/${f}.cl
+    DEPENDS ${f}.cl
+    COMMENT "Compiling ${f}.cl to ${f}.co"
+  )
+  add_custom_target(${f}_co ALL DEPENDS ${f}.co)
+  install(FILES ${CMAKE_CURRENT_BINARY_DIR}/${f}.co DESTINATION bin COMPONENT examples)
+endmacro(inline_asm_example)
+
 macro(asm_sp3_example f)
   add_custom_command(
     OUTPUT ${f}.s
@@ -91,6 +105,16 @@ macro(asm_dispatch_example f)
            COMMAND ./${f}
            WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR})
 endmacro(asm_dispatch_example)
+
+macro(inline_asm_dispatch_example f)
+  inline_asm_example(${f})
+  add_executable(${f} ${f}.cpp)
+  target_link_libraries(${f} examples_common)
+  install(FILES ${CMAKE_CURRENT_BINARY_DIR}/${f} DESTINATION bin COMPONENT examples)
+  add_test(NAME ${f}
+           COMMAND ./${f}
+           WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR})
+endmacro(inline_asm_dispatch_example)
 
 add_subdirectory(common)
 add_subdirectory(sp3)
