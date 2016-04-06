@@ -56,6 +56,14 @@ include(AddLLVM)
 message(STATUS "Found LLVM ${LLVM_PACKAGE_VERSION}")
 message(STATUS "Using LLVMConfig.cmake in: ${LLVM_DIR}")
 
+find_program(CLANG NAMES clang PATHS ${LLVM_TOOLS_BINARY_DIR})
+
+if (CLANG)
+  message(STATUS "Found Clang: ${CLANG}")
+else()
+  MESSAGE(STATUS "Clang not found, not building clang examples")
+endif()
+
 set (HSA_ROOT "/opt/hsa" CACHE PATH "HSA runtime path")
 set (HSA_HEADER_DIR ${HSA_ROOT}/include CACHE PATH "HSA include path")
 find_path(HSA_HEADER hsa.h PATHS ${HSA_HEADER_DIR} NO_DEFAULT_PATH)

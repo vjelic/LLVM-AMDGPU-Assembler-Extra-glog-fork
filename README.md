@@ -8,7 +8,8 @@ This repository contains the following useful items related to AMDGPU ISA assemb
   * *examples/asm-kernel*: example of AMDGPU kernel code 
   * *examples/gfx8/ds_bpermute*: transfer data between lanes in a wavefront with ds_bpermute_b32
   * *examples/gfx8/dpp_reduce*: calculate prefix sum in a wavefront with DPP instructions
-  * *examples/gfx8/s_memrealtmie*: use s_memrealtime instruction to create a delay
+  * *examples/gfx8/s_memrealtime*: use s_memrealtime instruction to create a delay
+  * *examples/gx8/s_memrealtime_inline*: inline assembly in OpenCL kernel version of s_memrealtime
   * *bin/sp3_to_mc.pl*: script to convert some AMD sp3 legacy assembler syntax into LLVM MC
   * *examples/sp3*: examples of sp3 convertable code
 
@@ -29,6 +30,7 @@ To build everything, create build directory and run cmake and make:
     cmake -DLLVM_DIR=/srv/git/llvm.git/build ..
     make
 
+Examples that require clang will only be built if clang is built as part of clang.
 
 #### Using amdphdrs
 
@@ -37,7 +39,6 @@ For example, given assembly source in asm.s, the following will assemble it and 
 
     llvm-mc -arch=amdgcn -mcpu=fiji -filetype=obj -o asm.o asm.s
     andphdrs asm.o asm.co
-
 
 #### Differences between LLVM AMDGPU Assembler and AMD SP3 assembler
 ##### Macro support

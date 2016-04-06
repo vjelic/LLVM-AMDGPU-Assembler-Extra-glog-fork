@@ -41,7 +41,6 @@
 ################################################################################
 
 set(LLVM-MC ${LLVM_TOOLS_BINARY_DIR}/llvm-mc)
-set(CLANG ${LLVM_TOOLS_BINARY_DIR}/clang)
 set(AMDPHDRS $<TARGET_FILE:amdphdrs>)
 set(AMDPHDRS_DIR $<TARGET_FILE_DIR:amdphdrs>)
 set(SP3_TO_MC "${CMAKE_SOURCE_DIR}/bin/sp3_to_mc.pl")
@@ -107,6 +106,7 @@ macro(asm_dispatch_example f)
 endmacro(asm_dispatch_example)
 
 macro(inline_asm_dispatch_example f)
+  if (CLANG)
   inline_asm_example(${f})
   add_executable(${f} ${f}.cpp)
   target_link_libraries(${f} examples_common)
@@ -114,6 +114,7 @@ macro(inline_asm_dispatch_example f)
   add_test(NAME ${f}
            COMMAND ./${f}
            WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR})
+  endif()
 endmacro(inline_asm_dispatch_example)
 
 add_subdirectory(common)
