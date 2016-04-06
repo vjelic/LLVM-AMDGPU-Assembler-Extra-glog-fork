@@ -39,3 +39,17 @@ For example, given assembly source in asm.s, the following will assemble it and 
     andphdrs asm.o asm.co
 
 
+#### Differences between LLVM AMDGPU Assembler and AMD SP3 assembler
+##### Macro support
+SP3 supports proprietary set of macros/tools. sp3_to_mc.pl script attempts
+to translate them into GAS syntax understood by llvm-mc.
+
+##### flat_atomic_cmpswap instruction has 32-bit destination
+
+LLVM AMDGPU:
+
+    flat_atomic_cmpswap v7, v[9:10], v[7:8]
+
+SP3:
+
+    flat_atomic_cmpswap v[7:8], v[9:10], v[7:8]
