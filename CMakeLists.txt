@@ -66,13 +66,16 @@ endif()
 
 set (HSA_ROOT "/opt/hsa" CACHE PATH "HSA runtime path")
 set (HSA_HEADER_DIR ${HSA_ROOT}/include CACHE PATH "HSA include path")
-find_path(HSA_HEADER hsa.h PATHS ${HSA_HEADER_DIR} NO_DEFAULT_PATH)
+set (ROCM_ROOT "/opt/rocm" CACHE PATH "ROCm runtime path")
+set (ROCM_HEADER_DIR ${ROCM_ROOT}/include CACHE PATH "ROCm include path")
+
+find_path(HSA_HEADER hsa.h PATHS ${ROCM_HEADER_DIR} ${HSA_HEADER_DIR} NO_DEFAULT_PATH)
 find_path(HSA_HEADER hsa.h)
 if (NOT HSA_HEADER)
   MESSAGE("HSA header not found. Use -DHSA_HEADER_DIR=<path_to_hsa.h>.")
 endif (NOT HSA_HEADER)
 
-find_library(HSA_LIBRARY hsa-runtime64 PATHS ${HSA_LIBRARY_DIR} ${HSA_ROOT}/lib NO_DEFAULT_PATH)
+find_library(HSA_LIBRARY hsa-runtime64 PATHS ${HSA_LIBRARY_DIR} ${ROCM_ROOT}/lib ${HSA_ROOT}/lib NO_DEFAULT_PATH)
 find_library(HSA_LIBRARY hsa-runtime64)
 if (HSA_LIBRARY)
   MESSAGE(STATUS "Found HSA library: ${HSA_LIBRARY}")
