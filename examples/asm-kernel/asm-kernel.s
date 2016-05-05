@@ -40,10 +40,10 @@
 //
 ////////////////////////////////////////////////////////////////////////////////
 
-.hsa_code_object_version 1,0
+.hsa_code_object_version 2,0
 .hsa_code_object_isa 8, 0, 3, "AMD", "AMDGPU"
 
-.hsatext
+.text
 .p2align 8
 .amdgpu_hsa_kernel hello_world
 
