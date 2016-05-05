@@ -49,7 +49,7 @@ macro(asm_assemble f)
 add_custom_command(
   OUTPUT ${f}.o
   COMMAND
-    ${LLVM-MC} -arch=amdgcn -mcpu=fiji -filetype=obj -o ${f}.o ${CMAKE_CURRENT_SOURCE_DIR}/${f}.s
+    ${CLANG}  -x assembler -target amdgcn--amdhsa -mcpu=fiji -c -o ${f}.o ${CMAKE_CURRENT_SOURCE_DIR}/${f}.s
   DEPENDS ${f}.s
   COMMENT "Assembling ${f}.s to ${f}.o"
 )
@@ -59,9 +59,9 @@ macro(asm_link f)
 add_custom_command(
   OUTPUT ${f}.co
   COMMAND
-    ${AMDPHDRS} ${f}.o ${f}.co
+    ${CLANG} -target amdgcn--amdhsa ${f}.o -o ${f}.co
   DEPENDS ${f}.o
-  COMMENT "Linking ${f}.o to ${f}.co with amdphdrs"
+  COMMENT "Linking ${f}.o to ${f}.co with clang"
 )
 endmacro(asm_link)
 
