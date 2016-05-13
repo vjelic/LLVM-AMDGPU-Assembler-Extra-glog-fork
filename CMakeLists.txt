@@ -2,24 +2,24 @@
 ##
 ## The University of Illinois/NCSA
 ## Open Source License (NCSA)
-## 
+##
 ## Copyright (c) 2016, Advanced Micro Devices, Inc. All rights reserved.
-## 
+##
 ## Developed by:
-## 
+##
 ##                 AMD Research and AMD HSA Software Development
-## 
+##
 ##                 Advanced Micro Devices, Inc.
-## 
+##
 ##                 www.amd.com
-## 
+##
 ## Permission is hereby granted, free of charge, to any person obtaining a copy
 ## of this software and associated documentation files (the "Software"), to
 ## deal with the Software without restriction, including without limitation
 ## the rights to use, copy, modify, merge, publish, distribute, sublicense,
 ## and#or sell copies of the Software, and to permit persons to whom the
 ## Software is furnished to do so, subject to the following conditions:
-## 
+##
 ##  - Redistributions of source code must retain the above copyright notice,
 ##    this list of conditions and the following disclaimers.
 ##  - Redistributions in binary form must reproduce the above copyright
@@ -29,7 +29,7 @@
 ##    nor the names of its contributors may be used to endorse or promote
 ##    products derived from this Software without specific prior written
 ##    permission.
-## 
+##
 ## THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
 ## IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
 ## FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL
@@ -46,42 +46,43 @@ project(LLVM-AMDGPU-Assembler-Extra)
 
 list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/cmake_modules")
 
-find_package(Perl REQUIRED)
+option( BUILD_EXAMPLES "Build amdphdrs examples in addition to the tool [requires clang, hsa]" ON )
 
-find_package(LLVM REQUIRED PATHS ${LLVM_DIR} NO_DEFAULT_PATH)
+if( BUILD_EXAMPLES )
+  find_package(Perl REQUIRED)
 
-list(APPEND CMAKE_MODULE_PATH ${LLVM_CMAKE_DIR})
-include(AddLLVM)
+  find_package(LLVM REQUIRED PATHS ${LLVM_DIR} NO_DEFAULT_PATH)
+  include(AddLLVM)
+  message(STATUS "Found LLVM ${LLVM_PACKAGE_VERSION}")
+  message(STATUS "Using LLVMConfig.cmake in: ${LLVM_DIR}")
+  list(APPEND CMAKE_MODULE_PATH ${LLVM_CMAKE_DIR})
 
-message(STATUS "Found LLVM ${LLVM_PACKAGE_VERSION}")
-message(STATUS "Using LLVMConfig.cmake in: ${LLVM_DIR}")
+  find_program(CLANG NAMES clang PATHS ${LLVM_TOOLS_BINARY_DIR})
+  if (CLANG)
+    message(STATUS "Found Clang: ${CLANG}")
+  else()
+    MESSAGE(STATUS "Clang not found, not building clang examples")
+  endif()
 
-find_program(CLANG NAMES clang PATHS ${LLVM_TOOLS_BINARY_DIR})
+  set (HSA_ROOT "/opt/hsa" CACHE PATH "HSA runtime path")
+  set (HSA_HEADER_DIR ${HSA_ROOT}/include CACHE PATH "HSA include path")
+  set (ROCM_ROOT "/opt/rocm" CACHE PATH "ROCm runtime path")
+  set (ROCM_HEADER_DIR ${ROCM_ROOT}/include CACHE PATH "ROCm include path")
 
-if (CLANG)
-  message(STATUS "Found Clang: ${CLANG}")
-else()
-  MESSAGE(STATUS "Clang not found, not building clang examples")
+  find_path(HSA_HEADER hsa.h PATHS ${ROCM_HEADER_DIR} ${HSA_HEADER_DIR} NO_DEFAULT_PATH)
+  find_path(HSA_HEADER hsa.h)
+  if (NOT HSA_HEADER)
+    MESSAGE("HSA header not found. Use -DHSA_HEADER_DIR=<path_to_hsa.h>.")
+  endif (NOT HSA_HEADER)
+
+  find_library(HSA_LIBRARY hsa-runtime64 PATHS ${HSA_LIBRARY_DIR} ${ROCM_ROOT}/lib ${HSA_ROOT}/lib NO_DEFAULT_PATH)
+  find_library(HSA_LIBRARY hsa-runtime64)
+  if (HSA_LIBRARY)
+    MESSAGE(STATUS "Found HSA library: ${HSA_LIBRARY}")
+  else (HSA_LIBRARY)
+    MESSAGE(STATUS "HSA runtime library not found. Use -DHSA_LIBRARY_DIR=<path_to_libhsa-runtime64.so>.")
+  endif (HSA_LIBRARY)
 endif()
-
-set (HSA_ROOT "/opt/hsa" CACHE PATH "HSA runtime path")
-set (HSA_HEADER_DIR ${HSA_ROOT}/include CACHE PATH "HSA include path")
-set (ROCM_ROOT "/opt/rocm" CACHE PATH "ROCm runtime path")
-set (ROCM_HEADER_DIR ${ROCM_ROOT}/include CACHE PATH "ROCm include path")
-
-find_path(HSA_HEADER hsa.h PATHS ${ROCM_HEADER_DIR} ${HSA_HEADER_DIR} NO_DEFAULT_PATH)
-find_path(HSA_HEADER hsa.h)
-if (NOT HSA_HEADER)
-  MESSAGE("HSA header not found. Use -DHSA_HEADER_DIR=<path_to_hsa.h>.")
-endif (NOT HSA_HEADER)
-
-find_library(HSA_LIBRARY hsa-runtime64 PATHS ${HSA_LIBRARY_DIR} ${ROCM_ROOT}/lib ${HSA_ROOT}/lib NO_DEFAULT_PATH)
-find_library(HSA_LIBRARY hsa-runtime64)
-if (HSA_LIBRARY)
-  MESSAGE(STATUS "Found HSA library: ${HSA_LIBRARY}")
-else (HSA_LIBRARY)
-  MESSAGE(STATUS "HSA runtime library not found. Use -DHSA_LIBRARY_DIR=<path_to_libhsa-runtime64.so>.")
-endif (HSA_LIBRARY)
 
 if(CMAKE_INSTALL_PREFIX_INITIALIZED_TO_DEFAULT)
   SET(CMAKE_INSTALL_PREFIX ${CMAKE_BINARY_DIR}/dist CACHE INTERNAL "Prefix prepended to install directories")
@@ -94,4 +95,7 @@ endif(UNIX)
 enable_testing()
 
 add_subdirectory(amdphdrs)
-add_subdirectory(examples)
+
+if( BUILD_EXAMPLES )
+  add_subdirectory(examples)
+endif()
