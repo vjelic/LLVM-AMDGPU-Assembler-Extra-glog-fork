@@ -17,6 +17,9 @@ This repository contains the following useful items related to AMDGPU ISA assemb
 
 At the time of this writing (February 2016), LLVM trunk build and latest ROCR runtime is needed.
 
+Note that LLVM trunk (May or later) now uses lld as linker and produces AMD Code Object (v2).
+amdphdrs is now obsolete.
+
 
 #### Building
 
@@ -87,6 +90,7 @@ For example, given assembly source in asm.s, the following will assemble it and 
 
     llvm-mc -arch=amdgcn -mcpu=fiji -filetype=obj -o asm.o asm.s
     andphdrs asm.o asm.co
+
 
 #### Differences between LLVM AMDGPU Assembler and AMD SP3 assembler
 ##### Macro support
