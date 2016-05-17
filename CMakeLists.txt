@@ -52,6 +52,7 @@ if( BUILD_EXAMPLES )
   find_package(Perl REQUIRED)
 
   find_package(LLVM REQUIRED PATHS ${LLVM_DIR} NO_DEFAULT_PATH)
+  list(APPEND CMAKE_MODULE_PATH "${LLVM_CMAKE_DIR}")
   include(AddLLVM)
   message(STATUS "Found LLVM ${LLVM_PACKAGE_VERSION}")
   message(STATUS "Using LLVMConfig.cmake in: ${LLVM_DIR}")
