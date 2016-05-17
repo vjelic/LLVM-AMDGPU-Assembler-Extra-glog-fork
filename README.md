@@ -9,7 +9,8 @@ This repository contains the following useful items related to AMDGPU ISA assemb
   * *examples/gfx8/ds_bpermute*: transfer data between lanes in a wavefront with ds_bpermute_b32
   * *examples/gfx8/dpp_reduce*: calculate prefix sum in a wavefront with DPP instructions
   * *examples/gfx8/s_memrealtime*: use s_memrealtime instruction to create a delay
-  * *examples/gx8/s_memrealtime_inline*: inline assembly in OpenCL kernel version of s_memrealtime
+  * *examples/gfx8/s_memrealtime_inline*: inline assembly in OpenCL kernel version of s_memrealtime
+  * *examples/api/assemble*: use LLVM API to assemble a kernel
   * *bin/sp3_to_mc.pl*: script to convert some AMD sp3 legacy assembler syntax into LLVM MC
   * *examples/sp3*: examples of sp3 convertable code
 
