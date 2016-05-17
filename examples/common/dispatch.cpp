@@ -2,24 +2,24 @@
 //
 // The University of Illinois/NCSA
 // Open Source License (NCSA)
-// 
+//
 // Copyright (c) 2016, Advanced Micro Devices, Inc. All rights reserved.
-// 
+//
 // Developed by:
-// 
+//
 //                 AMD Research and AMD HSA Software Development
-// 
+//
 //                 Advanced Micro Devices, Inc.
-// 
+//
 //                 www.amd.com
-// 
+//
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to
 // deal with the Software without restriction, including without limitation
 // the rights to use, copy, modify, merge, publish, distribute, sublicense,
 // and/or sell copies of the Software, and to permit persons to whom the
 // Software is furnished to do so, subject to the following conditions:
-// 
+//
 //  - Redistributions of source code must retain the above copyright notice,
 //    this list of conditions and the following disclaimers.
 //  - Redistributions in binary form must reproduce the above copyright
@@ -29,7 +29,7 @@
 //    nor the names of its contributors may be used to endorse or promote
 //    products derived from this Software without specific prior written
 //    permission.
-// 
+//
 // THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
 // IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
 // FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL
@@ -238,7 +238,7 @@ bool Dispatch::LoadCodeObjectFromFile(const std::string& filename)
   if (!in) { output << "Error: failed to load " << filename << std::endl; return false; }
   size_t size = std::string::size_type(in.tellg());
   char *ptr = (char*) AllocateSystemMemory(size);
-  if (!ptr) { 
+  if (!ptr) {
     output << "Error: failed to allocate memory for code object." << std::endl;
     return false;
   }
@@ -306,7 +306,7 @@ bool Dispatch::Wait()
     result = hsa_signal_wait_acquire(signal,
       HSA_SIGNAL_CONDITION_EQ, 0, ~0ULL, HSA_WAIT_STATE_ACTIVE);
     clock_t clocks = clock() - beg;
-    if (clocks > (clock_t) TIMEOUT * CLOCKS_PER_SEC) { 
+    if (clocks > (clock_t) TIMEOUT * CLOCKS_PER_SEC) {
       output << "Kernel execution timed out, elapsed time: " << (long) clocks << std::endl;
       return false;
     }
@@ -432,7 +432,7 @@ uint64_t Dispatch::GetTimestampFrequency()
     return 0;
   }
 
-  return frequency;  
+  return frequency;
 }
 
 }

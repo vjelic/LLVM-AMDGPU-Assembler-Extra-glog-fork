@@ -2,24 +2,24 @@
 //
 // The University of Illinois/NCSA
 // Open Source License (NCSA)
-// 
+//
 // Copyright (c) 2016, Advanced Micro Devices, Inc. All rights reserved.
-// 
+//
 // Developed by:
-// 
+//
 //                 AMD Research and AMD HSA Software Development
-// 
+//
 //                 Advanced Micro Devices, Inc.
-// 
+//
 //                 www.amd.com
-// 
+//
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to
 // deal with the Software without restriction, including without limitation
 // the rights to use, copy, modify, merge, publish, distribute, sublicense,
 // and/or sell copies of the Software, and to permit persons to whom the
 // Software is furnished to do so, subject to the following conditions:
-// 
+//
 //  - Redistributions of source code must retain the above copyright notice,
 //    this list of conditions and the following disclaimers.
 //  - Redistributions in binary form must reproduce the above copyright
@@ -29,7 +29,7 @@
 //    nor the names of its contributors may be used to endorse or promote
 //    products derived from this Software without specific prior written
 //    permission.
-// 
+//
 // THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
 // IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
 // FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL
@@ -71,7 +71,7 @@ hello_world:
   //read kernel argument
   s_load_dwordx2  s[2:3], s[0:1], 0x00
   s_waitcnt 0
-  
+
   //compute finish time s[0:1]
   s_add_u32 s0, s2, s4
   s_addc_u32 s1, s3, s5
@@ -82,7 +82,7 @@ loop_start:
   //get current timestamp
   s_memrealtime s[4:5]
   s_waitcnt 0
-  
+
   //we don't have s_cmp_*64 instruction so have to compare u32 parts
   //alternatively we can move data to vgpr and use v_cmp_lt_u64
   s_cmp_lt_u32 s5, s1
@@ -92,5 +92,5 @@ loop_start:
   s_cmp_lt_u32 s4, s0
   s_cbranch_scc1 loop_start
 loop_end:
-  
+
   s_endpgm
