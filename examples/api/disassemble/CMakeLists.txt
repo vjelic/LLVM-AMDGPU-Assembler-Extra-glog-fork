@@ -40,5 +40,23 @@
 ##
 ################################################################################
 
-add_subdirectory(assemble)
-add_subdirectory(disassemble)
+include_directories(${LLVM_INCLUDE_DIRS})
+
+add_definitions(${LLVM_DEFINITIONS})
+add_definitions(-fno-rtti)
+
+llvm_map_components_to_libnames(LIBS
+  AllTargetsAsmPrinters
+  AllTargetsAsmParsers
+  AllTargetsDescs
+  AllTargetsDisassemblers
+  AllTargetsInfos
+  MC
+  MCParser
+  Support
+)
+
+add_executable(disassemble disassemble.cpp)
+
+target_link_libraries(disassemble ${LIBS})
+install(TARGETS disassemble DESTINATION bin COMPONENT examples)
