@@ -70,6 +70,16 @@ Here, hexdump is used to display contents of file in hexadecimal (0x.. form) whi
 is then consumed by llvm-mc.
 
 
+#### Assembling source into code object using LLVM API
+
+Refer to *examples/api/assemble*.
+
+
+#### Disassembling instruction stream using LLVM API
+
+Refer to *examples/api/disassemble*.
+
+
 ##### Using amdphdrs
 
 Given ELF object produced by llvm-mc, amdphdrs produces AMDGPU Code Object version 1.
