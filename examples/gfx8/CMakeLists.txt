@@ -43,4 +43,5 @@
 asm_dispatch_example(ds_bpermute)
 asm_dispatch_example(dpp_reduce)
 asm_dispatch_example(s_memrealtime)
+asm_dispatch_example(f16_vector_add)
 inline_asm_dispatch_example(s_memrealtime_inline)

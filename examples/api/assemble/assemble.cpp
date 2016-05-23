@@ -121,7 +121,7 @@ private:
     // Set up the MCContext for creating symbols and MCExpr's.
     MCObjectFileInfo MOFI;
     MCContext Ctx(MAI.get(), MRI.get(), &MOFI, nullptr);
-    MOFI.InitMCObjectFileInfo(TheTriple, Reloc::Default, CodeModel::Default, Ctx);
+    MOFI.InitMCObjectFileInfo(TheTriple, true, CodeModel::Default, Ctx);
 
     std::string FeaturesStr;
 
