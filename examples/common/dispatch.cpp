@@ -58,6 +58,8 @@ Dispatch::Dispatch(int argc, const char** argv)
   cpu_agent.handle = 0;
   signal.handle = 0;
   kernarg_region.handle = 0;
+  system_region.handle = 0;
+  local_region.handle = 0;
 }
 
 hsa_status_t find_gpu_device(hsa_agent_t agent, void *data)
