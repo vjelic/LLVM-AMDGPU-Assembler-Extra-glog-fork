@@ -17,8 +17,7 @@ This repository contains the following useful items related to AMDGPU ISA assemb
 
 At the time of this writing (February 2016), LLVM trunk build and latest ROCR runtime is needed.
 
-Note that LLVM trunk (May or later) now uses lld as linker and produces AMD Code Object (v2).
-amdphdrs is now obsolete.
+LLVM trunk (May or later) now uses lld as linker and produces AMD Code Object (v2).
 
 
 #### Building
@@ -58,7 +57,7 @@ It is possible to extract contents of .text section after assembling to code obj
 
 The following command line may be used to dump contents of code object:
 
-    llvm-objdump -disassemble asm.o
+    llvm-objdump -disassemble -mcpu=fiji asm.o
 
 This includes text disassembly of .text section.
 
@@ -85,7 +84,9 @@ Refer to *examples/api/disassemble*.
 
 ##### Using amdphdrs
 
-Given ELF object produced by llvm-mc, amdphdrs produces AMDGPU Code Object version 1.
+Note that normally standard lld and Code Object version 2 should be used which is closer to standard ELF format.
+
+amdphdrs (now obsolete) is complimentary utility that can be used to produce AMDGPU Code Object version 1.  
 For example, given assembly source in asm.s, the following will assemble it and link using amdphdrs:
 
     llvm-mc -arch=amdgcn -mcpu=fiji -filetype=obj -o asm.o asm.s
@@ -106,3 +107,11 @@ LLVM AMDGPU:
 SP3:
 
     flat_atomic_cmpswap v[7:8], v[9:10], v[7:8]
+
+##### Atomic instructions that return value should have glc flag explicitly
+
+LLVM AMDGPU:
+    flat_atomic_swap_x2 v[0:1], v[0:1], v[2:3] glc
+
+SP3
+    flat_atomic_swap_x2 v[0:1], v[0:1], v[2:3]
