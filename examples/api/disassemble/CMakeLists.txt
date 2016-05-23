@@ -60,3 +60,6 @@ add_executable(disassemble disassemble.cpp)
 
 target_link_libraries(disassemble ${LIBS})
 install(TARGETS disassemble DESTINATION bin COMPONENT examples)
+
+add_test(NAME api/disassemble
+         COMMAND $<TARGET_FILE:disassemble>)

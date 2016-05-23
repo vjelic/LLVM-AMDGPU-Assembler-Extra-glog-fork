@@ -60,3 +60,6 @@ add_executable(assemble assemble.cpp)
 
 target_link_libraries(assemble ${LIBS})
 install(TARGETS assemble DESTINATION bin COMPONENT examples)
+
+add_test(NAME api/assemble
+         COMMAND $<TARGET_FILE:assemble>)
