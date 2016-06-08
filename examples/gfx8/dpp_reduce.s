@@ -82,17 +82,17 @@ hello_world:
   v_add_f32 v1, v0, v0 row_shr:1 bound_ctrl:0
   v_add_f32 v1, v0, v1 row_shr:2 bound_ctrl:0
   v_add_f32 v1, v0, v1 row_shr:3 bound_ctrl:0
-  v_nop // Nop required for data hazard in SP
-  v_nop // Nop required for data hazard in SP
+  s_nop 0 // Nop required for data hazard in SP
+  s_nop 0 // Nop required for data hazard in SP
   v_add_f32 v1, v1, v1 row_shr:4 bank_mask:0xe
-  v_nop // Nop required for data hazard in SP
-  v_nop // Nop required for data hazard in SP
+  s_nop 0 // Nop required for data hazard in SP
+  s_nop 0 // Nop required for data hazard in SP
   v_add_f32 v1, v1, v1 row_shr:8 bank_mask:0xc
-  v_nop // Nop required for data hazard in SP
-  v_nop // Nop required for data hazard in SP
+  s_nop 0 // Nop required for data hazard in SP
+  s_nop 0 // Nop required for data hazard in SP
   v_add_f32 v1, v1, v1 row_bcast:15 row_mask:0xa
-  v_nop // Nop required for data hazard in SP
-  v_nop // Nop required for data hazard in SP
+  s_nop 0 // Nop required for data hazard in SP
+  s_nop 0 // Nop required for data hazard in SP
   v_add_f32 v1, v1, v1 row_bcast:31 row_mask:0xc
 
   flat_store_dword v[3:4], v1
