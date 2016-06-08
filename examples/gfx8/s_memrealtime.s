@@ -58,12 +58,12 @@ hello_world:
    .amd_kernel_code_t
       enable_sgpr_kernarg_segment_ptr = 1
       is_ptr64 = 1
-      compute_pgm_rsrc1_vgprs = 8
-      compute_pgm_rsrc1_sgprs = 8
-      compute_pgm_rsrc2_user_sgpr = 6
+      compute_pgm_rsrc1_vgprs = 0
+      compute_pgm_rsrc1_sgprs = 0
+      compute_pgm_rsrc2_user_sgpr = 2
       kernarg_segment_byte_size = 8
       wavefront_sgpr_count = 8
-      workitem_vgpr_count = 6
+      workitem_vgpr_count = 1
   .end_amd_kernel_code_t
 
   //get start timestamp
