@@ -1,4 +1,4 @@
-LLVM AMDGPU Assembler Extras
+LLVM AMDGPU Assembler Helper Tools 
 ============================
 
 #### Overview
