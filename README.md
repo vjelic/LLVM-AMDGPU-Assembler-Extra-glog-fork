@@ -34,7 +34,7 @@ To build everything, create build directory and run cmake and make:
     cmake -DLLVM_DIR=/srv/git/llvm.git/build ..
     make
 
-Examples that require clang will only be built if clang is built as part of clang.
+Examples that require clang will only be built if clang is built as part of llvm.
 
 #### Use cases
 
