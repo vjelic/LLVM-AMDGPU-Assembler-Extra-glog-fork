@@ -76,7 +76,7 @@ macro(inline_asm_example f)
   add_custom_command(
     OUTPUT ${f}.co
     COMMAND
-      ${CLANG} -x cl -Dcl_clang_storage_class_specifiers -target amdgcn--amdhsa -mcpu=fiji -B ${AMDPHDRS_DIR} -o ${f}.co ${CMAKE_CURRENT_SOURCE_DIR}/${f}.cl
+      ${CLANG} -x cl -Xclang -finclude-default-header -Dcl_clang_storage_class_specifiers -target amdgcn--amdhsa -mcpu=fiji -B ${AMDPHDRS_DIR} -o ${f}.co ${CMAKE_CURRENT_SOURCE_DIR}/${f}.cl
     DEPENDS ${f}.cl
     COMMENT "Compiling ${f}.cl to ${f}.co"
   )
