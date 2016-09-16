@@ -50,6 +50,7 @@
 #include "llvm/MC/MCObjectFileInfo.h"
 #include "llvm/MC/MCParser/AsmLexer.h"
 #include "llvm/MC/MCParser/MCTargetAsmParser.h"
+#include "llvm/MC/MCStreamer.h"
 #include "llvm/Support/TargetRegistry.h"
 #include "llvm/Support/TargetSelect.h"
 #include "llvm/Support/ManagedStatic.h"
@@ -134,7 +135,9 @@ private:
 
     SrcMgr.AddNewSourceBuffer(std::move(BufferPtr), SMLoc());
 
-    MCAsmBackend *MAB = TheTarget->createMCAsmBackend(*MRI, TripleName, MCPU);
+    MCTargetOptions MCOptions;// = InitMCTargetOptionsFromFlags();
+
+    MCAsmBackend *MAB = TheTarget->createMCAsmBackend(*MRI, TripleName, MCPU, MCOptions);
 
     std::string Data;
     std::unique_ptr<raw_string_ostream> DataStream(make_unique<raw_string_ostream>(Data));
@@ -145,8 +148,6 @@ private:
         TheTriple, Ctx, *MAB, *BOS, CE, *STI, false, false, false));
 
     //Streamer->InitSections(true);
-
-    MCTargetOptions MCOptions;// = InitMCTargetOptionsFromFlags();
 
     std::unique_ptr<MCAsmParser> Parser(createMCAsmParser(SrcMgr, Ctx, *Streamer, *MAI));
 
