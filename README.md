@@ -115,3 +115,9 @@ LLVM AMDGPU:
 
 SP3
     flat_atomic_swap_x2 v[0:1], v[0:1], v[2:3]
+
+#### References
+  * [LLVM Use Guide for AMDGPU Back-End](http://llvm.org/docs/AMDGPUUsage.html)
+  * [AMD ISA Documents](http://developer.amd.com/resources/documentation-articles/developer-guides-manuals/)
+    * [AMD GCN3 Instruction Set Architecture (2015)](http://amd-dev.wpengine.netdna-cdn.com/wordpress/media/2013/07/AMD_GCN3_Instruction_Set_Architecture.pdf)
+    * [AMD_Southern_Islands_Instruction_Set_Architecture](http://amd-dev.wpengine.netdna-cdn.com/wordpress/media/2013/07/AMD_Southern_Islands_Instruction_Set_Architecture1.pdf)
