@@ -182,7 +182,12 @@ bool Dispatch::RunDispatch()
     (1 << HSA_PACKET_HEADER_BARRIER) |
     (HSA_FENCE_SCOPE_SYSTEM << HSA_PACKET_HEADER_ACQUIRE_FENCE_SCOPE) |
     (HSA_FENCE_SCOPE_SYSTEM << HSA_PACKET_HEADER_RELEASE_FENCE_SCOPE);
-  uint16_t setup = 1 << HSA_KERNEL_DISPATCH_PACKET_SETUP_DIMENSIONS;
+  uint16_t dim = 1;
+  if (aql->grid_size_y > 1)
+    dim = 2;
+  if (aql->grid_size_z > 1)
+    dim = 3;
+  uint16_t setup = dim << HSA_KERNEL_DISPATCH_PACKET_SETUP_DIMENSIONS;
   uint32_t header32 = header | (setup << 16);
   #if defined(_WIN32) || defined(_WIN64)  // Windows
     _InterlockedExchange(aql, header32);
