@@ -42,6 +42,7 @@
 
 #include "dispatch.hpp"
 #include "hsa.h"
+#include "hsa_ext_amd.h"
 #include <cstring>
 #include <fstream>
 #include <cstdlib>
@@ -60,6 +61,7 @@ Dispatch::Dispatch(int argc, const char** argv)
   kernarg_region.handle = 0;
   system_region.handle = 0;
   local_region.handle = 0;
+  gpu_local_region.handle = 0;
 }
 
 hsa_status_t find_gpu_device(hsa_agent_t agent, void *data)
@@ -97,7 +99,9 @@ hsa_status_t FindRegions(hsa_region_t region, void* data)
   }
 
   hsa_region_global_flag_t flags;
+  bool host_accessible_region = false;
   hsa_region_get_info(region, HSA_REGION_INFO_GLOBAL_FLAGS, &flags);
+  hsa_region_get_info(region, (hsa_region_info_t)HSA_AMD_REGION_INFO_HOST_ACCESSIBLE, &host_accessible_region);
 
   Dispatch* dispatch = static_cast<Dispatch*>(data);
 
@@ -106,7 +110,11 @@ hsa_status_t FindRegions(hsa_region_t region, void* data)
   }
 
   if (flags & HSA_REGION_GLOBAL_FLAG_COARSE_GRAINED) {
-    dispatch->SetLocalRegion(region);
+    if(host_accessible_region){
+      dispatch->SetLocalRegion(region);
+    }else{
+      dispatch->SetGPULocalRegion(region);
+    }
   }
 
   if (flags & HSA_REGION_GLOBAL_FLAG_KERNARG) {
@@ -224,6 +232,11 @@ void Dispatch::SetKernargRegion(hsa_region_t region)
   kernarg_region = region;
 }
 
+void Dispatch::SetGPULocalRegion(hsa_region_t region)
+{
+  gpu_local_region = region;
+}
+
 void Dispatch::SetLocalRegion(hsa_region_t region)
 {
   local_region = region;
@@ -321,6 +334,16 @@ bool Dispatch::Wait()
   return true;
 }
 
+void* Dispatch::AllocateGPULocalMemory(size_t size)
+{
+  assert(gpu_local_region.handle != 0);
+  void *p = NULL;
+
+  hsa_status_t status = hsa_memory_allocate(gpu_local_region, size, (void **)&p);
+  if (status != HSA_STATUS_SUCCESS) { HsaError("hsa_memory_allocate(gpu_local_region) failed", status); return 0; }
+  return p;
+}
+
 void* Dispatch::AllocateLocalMemory(size_t size)
 {
   assert(local_region.handle != 0);
@@ -361,17 +384,26 @@ bool Dispatch::CopyFromLocal(void* dest, void* src, size_t size)
   return true;
 }
 
-Buffer* Dispatch::AllocateBuffer(size_t size)
+Buffer* Dispatch::AllocateBuffer(size_t size, bool prefer_gpu_local)
 {
+  void* system_ptr = AllocateSystemMemory(size);
+  if (!system_ptr) { return 0; }
+
+  if (prefer_gpu_local && gpu_local_region.handle != 0) {
+    void* local_ptr = AllocateGPULocalMemory(size);
+    if (!local_ptr) { free(system_ptr); return 0; }
+    return new Buffer(size, local_ptr, system_ptr);
+  }
+
   if (local_region.handle != 0) {
-    void* system_ptr = AllocateSystemMemory(size);
-    if (!system_ptr) { return 0; }
     void* local_ptr = AllocateLocalMemory(size);
     if (!local_ptr) { free(system_ptr); return 0; }
     return new Buffer(size, local_ptr, system_ptr);
+  } else if (gpu_local_region.handle != 0) {
+    void* local_ptr = AllocateGPULocalMemory(size);
+    if (!local_ptr) { free(system_ptr); return 0; }
+    return new Buffer(size, local_ptr, system_ptr);
   } else {
-    void* system_ptr = AllocateSystemMemory(size);
-    if (!system_ptr) { return 0; }
     return new Buffer(size, system_ptr);
   }
 }

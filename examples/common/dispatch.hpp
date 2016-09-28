@@ -83,6 +83,7 @@ private:
   hsa_region_t system_region;
   hsa_region_t kernarg_region;
   hsa_region_t local_region;
+  hsa_region_t gpu_local_region;
   hsa_kernel_dispatch_packet_t* aql;
   uint64_t packet_index;
   void *kernarg;
@@ -112,6 +113,7 @@ public:
   void SetSystemRegion(hsa_region_t region);
   void SetKernargRegion(hsa_region_t region);
   void SetLocalRegion(hsa_region_t region);
+  void SetGPULocalRegion(hsa_region_t region);
   bool AllocateKernarg(uint32_t size);
   bool Run();
   int RunMain();
@@ -119,10 +121,11 @@ public:
   virtual bool SetupCodeObject();
   bool LoadCodeObjectFromFile(const std::string& filename);
   void* AllocateLocalMemory(size_t size);
+  void* AllocateGPULocalMemory(size_t size);
   void* AllocateSystemMemory(size_t size);
   bool CopyToLocal(void* dest, void* src, size_t size);
   bool CopyFromLocal(void* dest, void* src, size_t size);
-  Buffer* AllocateBuffer(size_t size);
+  Buffer* AllocateBuffer(size_t size, bool prefer_gpu_local=true);
   bool CopyTo(Buffer* buffer);
   bool CopyFrom(Buffer* buffer);
   virtual bool Setup() { return true; }
