@@ -86,6 +86,8 @@ private:
   hsa_region_t gpu_local_region;
   hsa_kernel_dispatch_packet_t* aql;
   uint64_t packet_index;
+  uint32_t group_static_size;
+  uint32_t group_dynamic_size;
   void *kernarg;
   size_t kernarg_offset;
   hsa_code_object_t code_object;
@@ -114,6 +116,7 @@ public:
   void SetKernargRegion(hsa_region_t region);
   void SetLocalRegion(hsa_region_t region);
   void SetGPULocalRegion(hsa_region_t region);
+  void SetDynamicGroupSegmentSize(uint32_t size);
   bool AllocateKernarg(uint32_t size);
   bool Run();
   int RunMain();

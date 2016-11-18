@@ -195,6 +195,7 @@ bool Dispatch::RunDispatch()
     dim = 2;
   if (aql->grid_size_z > 1)
     dim = 3;
+  aql->group_segment_size = group_static_size + group_dynamic_size;
   uint16_t setup = dim << HSA_KERNEL_DISPATCH_PACKET_SETUP_DIMENSIONS;
   uint32_t header32 = header | (setup << 16);
   #if defined(_WIN32) || defined(_WIN64)  // Windows
@@ -240,6 +241,11 @@ void Dispatch::SetGPULocalRegion(hsa_region_t region)
 void Dispatch::SetLocalRegion(hsa_region_t region)
 {
   local_region = region;
+}
+
+void Dispatch::SetDynamicGroupSegmentSize(uint32_t size)
+{
+  group_dynamic_size = size;
 }
 
 bool Dispatch::AllocateKernarg(uint32_t size)
@@ -309,6 +315,11 @@ bool Dispatch::SetupExecutable()
   status = hsa_executable_symbol_get_info(kernel_symbol,
                                           HSA_EXECUTABLE_SYMBOL_INFO_KERNEL_OBJECT,
                                           &code_handle);
+  if (status != HSA_STATUS_SUCCESS) { return HsaError("hsa_executable_symbol_get_info failed", status); }
+
+  status = hsa_executable_symbol_get_info(kernel_symbol,
+                HSA_EXECUTABLE_SYMBOL_INFO_KERNEL_GROUP_SEGMENT_SIZE,
+                &group_static_size);
   if (status != HSA_STATUS_SUCCESS) { return HsaError("hsa_executable_symbol_get_info failed", status); }
 
   aql->kernel_object = code_handle;
