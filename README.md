@@ -119,5 +119,5 @@ SP3
 #### References
   * [LLVM Use Guide for AMDGPU Back-End](http://llvm.org/docs/AMDGPUUsage.html)
   * [AMD ISA Documents](http://developer.amd.com/resources/documentation-articles/developer-guides-manuals/)
-    * [AMD GCN3 Instruction Set Architecture (2015)](http://amd-dev.wpengine.netdna-cdn.com/wordpress/media/2013/07/AMD_GCN3_Instruction_Set_Architecture.pdf)
+    * [AMD GCN3 Instruction Set Architecture (2016)](http://developer.amd.com/wordpress/media/2013/12/AMD_GCN3_Instruction_Set_Architecture_rev1.1.pdf)
     * [AMD_Southern_Islands_Instruction_Set_Architecture](http://amd-dev.wpengine.netdna-cdn.com/wordpress/media/2013/07/AMD_Southern_Islands_Instruction_Set_Architecture1.pdf)
