@@ -10,12 +10,6 @@
 
 
 .include "gpr_alloc.inc"
-
-// initial state (s[0:4] are overlapped with filtersA):
-// s[0:1] - kernarg address
-// s2 - wg x (output channels batch)
-// s3 - wg y (line in feature map)
-// s4 - wg z (image in minibatch)
 kernarg = 0
 gid_x = 3
 gid_y = 4
