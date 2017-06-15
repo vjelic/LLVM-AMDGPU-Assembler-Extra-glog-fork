@@ -97,8 +97,8 @@ gdsTest:
 	v_mov_b32 v2, 1
 	v_mov_b32 v3, 0
 	
-	ds_write_b32 v3, v3 gds
-	s_waitcnt 0
+	//ds_write_b32 v3, v3 gds
+	//s_waitcnt 0
 	
 	ds_add_u32 v3, v2 gds
 	s_waitcnt 0
