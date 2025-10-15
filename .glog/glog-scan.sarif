@@ -10,20 +10,7 @@
           "version": "1.0.0",
           "semanticVersion": "1.0.0",
           "informationUri": "https://www.glog.ai",
-          "rules": [
-            {
-              "id": "glog-7fc6594a-5688-42de-a723-b0975a19b7c0",
-              "help": {
-                "text": "",
-                "markdown": "## Description\n\nThe `memcpy` function in C++ is used to copy a block of memory from one location to another. This function is vulnerable to buffer overflow attacks if the size of the data being copied is larger than the destination buffer. In the provided code snippet, if the `size` is larger than the space allocated for `(char*) kernarg + kernarg_offset`, it can lead to a buffer overflow vulnerability.\n\n## Mitigation Advice\n\nTo mitigate this vulnerability, you should always ensure that the destination buffer is large enough to hold the data being copied. This can be done by checking the size of the destination buffer and the size of the source data before calling `memcpy`.\n\n## Source Code Fix Recommendation\n\nHere is a recommended fix for the provided code snippet:\n\n```cpp\nif (kernarg_offset + size <= sizeof(kernarg)) {\n    memcpy((char*) kernarg + kernarg_offset, ptr, size);\n} else {\n    // Handle error: buffer is too small\n}\n```\n\nIn this fix, we check if the destination buffer `(char*) kernarg + kernarg_offset` is large enough to hold the data being copied. If it is not, we handle the error appropriately.\n\n## Library Dependencies\n\nThe provided code snippet requires the following library to execute properly:\n\n```cpp\n#include <cstring>\n```\n\n## OWASP and CWE Links\n\n- [OWASP Buffer Overflow Attack](https://owasp.org/www-community/attacks/Buffer_overflow_attack)\n- [CWE-120: Buffer Copy without Checking Size of Input ('Classic Buffer Overflow')](https://cwe.mitre.org/data/definitions/120.html)"
-              },
-              "properties": {
-                "tags": [
-                  "DS121708"
-                ]
-              }
-            }
-          ],
+          "rules": [],
           "language": "en-US",
           "contents": [
             "localizedData",
@@ -33,73 +20,7 @@
         }
       },
       "language": "en-US",
-      "results": [
-        {
-          "ruleId": "glog-7fc6594a-5688-42de-a723-b0975a19b7c0",
-          "kind": "fail",
-          "level": "note",
-          "message": {
-            "text": "Detected Vulnerability in C Function (memcpy)"
-          },
-          "locations": [
-            {
-              "physicalLocation": {
-                "artifactLocation": {
-                  "uri": "examples/common/dispatch.cpp"
-                },
-                "region": {
-                  "startLine": 442,
-                  "startColumn": 2,
-                  "endLine": 442,
-                  "endColumn": 53,
-                  "charOffset": 14769,
-                  "charLength": 51,
-                  "snippet": {
-                    "text": "memcpy((char*) kernarg + kernarg_offset, ptr, size)",
-                    "rendered": {
-                      "text": "memcpy((char*) kernarg + kernarg_offset, ptr, size)",
-                      "markdown": "`memcpy((char*) kernarg + kernarg_offset, ptr, size)`"
-                    }
-                  },
-                  "sourceLanguage": "cpp"
-                }
-              }
-            }
-          ],
-          "fixes": [
-            {
-              "description": {
-                "text": "There are a number of conditions in which memcpy can introduce a vulnerability (mismatched buffer sizes, null pointers, etc.). More secure alternitives perform additional validation of the source and destination buffer"
-              },
-              "artifactChanges": [
-                {
-                  "artifactLocation": {
-                    "uri": "examples/common/dispatch.cpp"
-                  },
-                  "replacements": [
-                    {
-                      "deletedRegion": {
-                        "charOffset": 14769,
-                        "charLength": 51
-                      },
-                      "insertedContent": {
-                        "text": "memcpy_s((char*) kernarg + kernarg_offset, <size of (char*) kernarg + kernarg_offset>,  ptr,  size)"
-                      }
-                    }
-                  ]
-                }
-              ]
-            }
-          ],
-          "properties": {
-            "DevSkimSeverity": "BestPractice",
-            "DevSkimConfidence": "High",
-            "tags": [
-              "API.DangerousAPI.ProblematicFunction"
-            ]
-          }
-        }
-      ],
+      "results": [],
       "newlineSequences": [
         "\r\n",
         "\n"
